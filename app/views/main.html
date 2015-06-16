@@ -1,0 +1,42 @@
+<form name="createTodoForm" class="form bg-wrapper createTodoForm" ng-submit="createTodo(title)" style="margin-bottom: 25px;" novalidate>
+  <input class="inputTodo" ng-model="title" ng-disabled="saving" placeholder="What you want to do today?" autofocus>
+</form>
+
+<div class="bg-wrapper todo-wrapper">
+
+  <ul class="todo-list">
+    <li style="border-bottom: 1px solid #eeeeee;">
+      <p>{{ totalActive }} <span ng-if="totalActive <= 1">item</span><span ng-if="totalActive > 1">items</span> to do.</p>
+    </li>
+    <li class="todo-item" ng-repeat="todo in todos" ng-class="{ completed: todo.completed, selecting: todo === selectedTodo, editing: todo === editedTodo }" ng-show="(filterStatus === '') || (filterStatus === 'active' && !todo.completed) || (filterStatus === 'completed' && todo.completed)">
+      <div class="detail-todo">
+        <input class="toggle" type="checkbox" ng-model="todo.completed" ng-change="toggleCompleted($index, todo)">&nbsp;
+        <span ng-click="selectTodo(todo)" ng-dblclick="editTodo(todo)">{{ todo.title }}</span>
+        <button class="destroy-btn" ng-click="destroyTodo($index)">x</button>
+      </div>
+      <form class="update-todo" ng-submit="updateTodo($index, todo)">
+        <input ng-model="todo.title">
+      </form>
+    </li>
+  </ul>
+
+</div>
+
+<div class="filter bg-wrapper">
+
+  <p>Show:</p>
+  <ul id="filters">
+    <li>
+      <a href="" ng-class="{ active: filterStatus === '' }" ng-click="filter('')">All</a>
+    </li>
+    <li>
+      <a href="" ng-class="{ active: filterStatus === 'active' }" ng-click="filter('active')">Active</a>
+    </li>
+    <li>
+      <a href="" ng-class="{ active: filterStatus === 'completed' }" ng-click="filter('completed')">Completed</a>
+    </li>
+  </ul>
+
+  <button class="clear-todo-btn" ng-click="clearAll()">Clear All</button>
+
+</div>
